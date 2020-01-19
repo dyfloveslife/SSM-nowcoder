@@ -29,3 +29,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### maven ###
+mvnw
+.mvn
+
+
+*.cmd
