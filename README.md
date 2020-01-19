@@ -7,7 +7,7 @@
 - Spring Security、Spring Actuator
 - Maven、Tomcat、Git
 
-# 环境搭建及 SMM 使用
+# 环境搭建与说明
 - pom.xml
   - org.springframework.boot: 2.1.5.RELEASE
   - JDK version: 1.8
@@ -18,4 +18,5 @@
 
 配置 MyBatis 属性，使之自动生成主键，并开启数据库字段名与 Bean 实体名相匹配。日志等级设置为 debug，以便可以查看具体执行的 sql 语句。
 
-使用 logback 记录日志。
+使用 logback 记录日志，Spring Email 发送邮件，便于后序的注册操作。
+
