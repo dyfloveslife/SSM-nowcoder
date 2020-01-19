@@ -36,4 +36,4 @@ mvnw
 .mvn
 
 
-*.cmd
+mvnw.cmd
