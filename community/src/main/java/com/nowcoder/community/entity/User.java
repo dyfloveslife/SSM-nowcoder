@@ -2,6 +2,9 @@ package com.nowcoder.community.entity;
 
 import java.util.Date;
 
+/**
+ * 对应 MySQL 的 User 表中的字段
+ */
 public class User {
     private int id;
     private String username;
