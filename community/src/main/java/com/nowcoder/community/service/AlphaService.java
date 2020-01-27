@@ -16,19 +16,19 @@ public class AlphaService {
 
 
     public AlphaService() {
-        System.out.println("实例化 AlphaService...");
+//        System.out.println("实例化 AlphaService...");
     }
 
     // 在构造器之后初始化
     @PostConstruct
     public void init() {
-        System.out.println("初始化 AlphaService...");
+//        System.out.println("初始化 AlphaService...");
     }
 
     // 在销毁对象之前，调用该方法
     @PreDestroy
     public void destory() {
-        System.out.println("销毁 AlphaService...");
+//        System.out.println("销毁 AlphaService...");
     }
 
 

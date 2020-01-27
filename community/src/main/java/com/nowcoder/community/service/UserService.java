@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import javax.jws.Oneway;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -172,5 +171,9 @@ public class UserService implements CommunityConstant {
         // 0 - 有效
         // 1 - 无效
         loginTicketMapper.updateStatus(ticket, 1);
+    }
+
+    public LoginTicket findLoginTicket(String ticket) {
+        return loginTicketMapper.selectByTicket(ticket);
     }
 }
