@@ -26,4 +26,5 @@ public interface CommunityConstant {
      * "记住我"的情况下凭证超时时间
      */
     int REMEMBERME_EXPIRED_SECONDS = 3600 * 24 * 100;
+
 }

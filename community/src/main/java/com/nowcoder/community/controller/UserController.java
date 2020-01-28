@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -58,7 +56,6 @@ public class UserController {
 
         // 对上传的文件进行一些必要的处理
         String fileName = headerImage.getOriginalFilename();
-        System.out.println("fileName:->>>>>" + fileName);
 
         String suffix = fileName.substring(fileName.lastIndexOf("."));
         if (StringUtils.isBlank(suffix)) {
@@ -110,5 +107,19 @@ public class UserController {
             LOGGER.error("读取头像失败!" + e.getMessage());
         }
     }
-}
 
+    @RequestMapping(path = "/setting", method = RequestMethod.POST)
+    public String updatePasswordHeader(@RequestParam("password") String password,
+                                       @RequestParam("newPassword") String newPassword, Model model) {
+        User user = hostHolder.getUser();
+        String oldPassword = CommunityUtil.md5(password + user.getSalt());
+        if (!oldPassword.equals(user.getPassword())) {
+            model.addAttribute("passwordMsg", "原密码错误,请重新输入!");
+            return "/site/setting";
+        } else {
+            userService.updatePassword(user.getId(), CommunityUtil.md5(newPassword + user.getSalt()));
+            model.addAttribute("passwordMsg", "修改密码成功!");
+            return "/site/setting";
+        }
+    }
+}
