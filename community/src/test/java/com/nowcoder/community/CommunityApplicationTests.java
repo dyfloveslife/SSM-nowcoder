@@ -1,6 +1,5 @@
 package com.nowcoder.community;
 
-import com.nowcoder.community.config.AlphaConfig;
 import com.nowcoder.community.dao.AlphaDao;
 import com.nowcoder.community.service.AlphaService;
 import org.junit.Test;
@@ -14,7 +13,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.lang.reflect.Parameter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
