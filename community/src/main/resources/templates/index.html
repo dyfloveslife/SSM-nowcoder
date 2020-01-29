@@ -130,8 +130,10 @@
 						</a>
 						<div class="media-body">
 							<h6 class="mt-0 mb-3">
-								<!--utext 可以将转义字符给表示成该表示的形式-->
-								<a href="#" th:utext="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>
+								<!--utext 可以将转义字符给表示成该表示的形式
+								@{} 里面要是使用动态的话，则需要添加 ||
+								-->
+								<a th:href="@{|/discuss/detail/${map.post.id}|}" th:utext="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>
 								<span class="badge badge-secondary bg-primary" th:if="${map.post.type==1}">置顶</span>
 								<span class="badge badge-secondary bg-danger" th:if="${map.post.status==1}">精华</span>
 							</h6>
