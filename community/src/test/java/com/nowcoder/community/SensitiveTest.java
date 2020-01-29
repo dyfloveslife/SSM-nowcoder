@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-// 使用 CommunityApplication 配置类
 @ContextConfiguration(classes = CommunityApplication.class)
 public class SensitiveTest {
 

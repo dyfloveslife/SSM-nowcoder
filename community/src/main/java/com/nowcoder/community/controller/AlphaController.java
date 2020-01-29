@@ -164,7 +164,7 @@ public class AlphaController {
     // session 演示
     @RequestMapping(path = "/session/set", method = RequestMethod.GET)
     @ResponseBody
-    public String setSession (HttpSession session){
+    public String setSession(HttpSession session) {
         session.setAttribute("id", 1);
         session.setAttribute("name", "tom");
         return "set session";
@@ -176,6 +176,16 @@ public class AlphaController {
         System.out.println(session.getAttribute("id"));
         System.out.println(session.getAttribute("name"));
         return "get cookie";
+    }
+
+    // AJAX 示例
+    // 浏览器向服务器发起的请求
+    @RequestMapping(path = "/ajax", method = RequestMethod.POST)
+    @ResponseBody
+    public String testAJAX(String name, int age) {
+        System.out.println(name);
+        System.out.println(age);
+        return CommunityUtil.getJSONString(0, "操作成功!");
     }
 
 }
