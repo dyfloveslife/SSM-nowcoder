@@ -2,9 +2,7 @@ package com.nowcoder.community.dao;
 
 import com.nowcoder.community.entity.Message;
 import org.apache.ibatis.annotations.Mapper;
-
 import java.util.List;
-
 
 @Mapper
 public interface MessageMapper {
@@ -28,4 +26,9 @@ public interface MessageMapper {
     // 查询未读消息数量，动态的拼接 conversationId
     int selectLetterUnreadCount(int userId, String conversationId);
 
+    // 发送私信，新增消息
+    int insertMessage(Message message);
+
+    // 未读消息变为已读消息
+    int updateStatus(List<Integer> ids, int status);
 }
