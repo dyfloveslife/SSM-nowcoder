@@ -29,7 +29,7 @@
 							</li>
 							<!--没有登录的话，看不到消息-->
 							<li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser!=null}">
-								<a class="nav-link position-relative" href="site/letter.html">消息<span class="badge badge-danger">12</span></a>
+								<a class="nav-link position-relative" th:href="@{/letter/list}">消息<span class="badge badge-danger">12</span></a>
 							</li>
 							<!--没有登录的话，能看到注册按钮-->
 							<li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser==null}">
