@@ -47,4 +47,4 @@
 对于发布之前敏感词的过滤问题，采用前缀树实现。使用 AJAX 进行异步请求，从而实现在不刷新整个页面的情况下，更新页面部分数据。
 
 # 事务管理
-理解事务的特性，即原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）、持久性（Durability）。
+理解事务的特性，即原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）、持久性（Durability）。给“添加评论”模块添加事务。

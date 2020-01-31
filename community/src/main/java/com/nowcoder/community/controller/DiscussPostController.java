@@ -61,6 +61,8 @@ public class DiscussPostController implements CommunityConstant {
     // 查询帖子的时候需要根据 id 查，这里需要把 id 传进来
     // 在路径中取值，需要用到 @PathVariable 注解
     // 使用 model 携带一些数据
+    // 注意：这里的 model 和 page 会被 SpringMVC 在解析模板的时候自动装载上
+    // 所以，在网页中直接从 model 中取值即可
     @RequestMapping(path = "/detail/{discussPostId}", method = RequestMethod.GET)
     public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page) {
         // 获得帖子

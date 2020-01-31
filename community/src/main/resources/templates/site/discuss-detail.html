@@ -139,7 +139,9 @@
 							</div>
 							<!-- 回复列表 -->
 							<ul class="list-unstyled mt-4 bg-gray p-3 font-size-12 text-muted">
-								<!-- 第1条回复 -->
+								<!-- 第1条回复
+								 将 cvo 里面的 replys 取出来，重新命名为 rvo
+								 -->
 								<li class="pb-3 pt-3 mb-3 border-bottom" th:each="rvo:${cvo.replys}">
 									<div>
 										<!--如果没有回复的对象，即 target==null，则不需要显示用户A回复了B，直接显示用户A即可-->
@@ -161,29 +163,40 @@
 											<li class="d-inline ml-2"><a th:href="|#huifu-${rvoStat.count}|" data-toggle="collapse" class="text-primary">回复</a></li>
 										</ul>
 										<div th:id="|huifu-${rvoStat.count}|" class="mt-4 collapse">
-											<div>
-												<input type="text" class="input-size" placeholder="回复寒江雪"/>
-											</div>
-											<div class="text-right mt-2">
-												<button type="button" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
-											</div>										
+											<form method="post" th:action="@{|/comment/add/${post.id}|}">
+												<div>
+													<input type="text" class="input-size" name="content" th:placeholder="|回复${rvo.user.username}|"/>
+													<input type="hidden" name="entityType" value="2">
+													<input type="hidden" name="entityId" th:value="${cvo.comment.id}">
+													<input type="hidden" name="targetId" th:value="${rvo.user.id}">
+												</div>
+												<div class="text-right mt-2">
+													<button type="submit" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
+												</div>
+											</form>
 										</div>
 									</div>								
 								</li>
 								<!-- 回复输入框 -->
 								<li class="pb-3 pt-3">
-									<div>
-										<input type="text" class="input-size" placeholder="请输入你的观点"/>
-									</div>
-									<div class="text-right mt-2">
-										<button type="button" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
-									</div>
+									<form method="post" th:action="@{|/comment/add/${post.id}|}">
+										<div>
+											<input type="text" class="input-size" name="content" placeholder="请输入你的观点"/>
+											<input type="hidden" name="entityType" value="2">
+											<input type="hidden" name="entityId" th:value="${cvo.comment.id}">
+										</div>
+										<div class="text-right mt-2">
+											<button type="submit" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
+										</div>
+									</form>
 								</li>
 							</ul>
 						</div>
 					</li>
 				</ul>
-				<!-- 分页 -->
+				<!-- 分页
+				 这里复用主页的分页逻辑
+				 -->
 				<nav class="mt-5" th:replace="index::pagination">
 					<ul class="pagination justify-content-center">
 						<li class="page-item"><a class="page-link" href="#">首页</a></li>
@@ -200,10 +213,14 @@
 			</div>
 			<!-- 回帖输入 -->
 			<div class="container mt-3">
-				<form class="replyform">
+				<!-- 修改表单提交的方式与路径，注意路径是动态的 -->
+				<form class="replyform" method="post" th:action="@{|/comment/add/${post.id}|}">
 					<p class="mt-3">
 						<a name="replyform"></a>
-						<textarea placeholder="在这里畅所欲言你的看法吧!"></textarea>
+						<!--name 表示的是实体当中的属性，即 Comment 中的 content-->
+						<textarea placeholder="在这里畅所欲言你的看法吧!" name="content"></textarea>
+						<input type="hidden" name="entityType" value="1">
+						<input type="hidden" name="entityId" th:value="${post.id}">
 					</p>
 					<p class="text-right">
 						<button type="submit" class="btn btn-primary btn-sm">&nbsp;&nbsp;回&nbsp;&nbsp;帖&nbsp;&nbsp;</button>

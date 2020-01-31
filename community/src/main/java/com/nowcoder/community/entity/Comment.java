@@ -6,7 +6,7 @@ public class Comment {
 
     private int id;
     private int userId;
-    private int entiryType;
+    private int entityType;
     private int entityId;
     private int targetId;
     private String content;
@@ -29,12 +29,12 @@ public class Comment {
         this.userId = userId;
     }
 
-    public int getEntiryType() {
-        return entiryType;
+    public int getEntityType() {
+        return entityType;
     }
 
-    public void setEntiryType(int entiryType) {
-        this.entiryType = entiryType;
+    public void setEntityType(int entityType) {
+        this.entityType = entityType;
     }
 
     public int getEntityId() {
@@ -82,7 +82,7 @@ public class Comment {
         return "Comment{" +
                 "id=" + id +
                 ", userId=" + userId +
-                ", entiryType=" + entiryType +
+                ", entityType=" + entityType +
                 ", entityId=" + entityId +
                 ", targetId=" + targetId +
                 ", content='" + content + '\'' +
