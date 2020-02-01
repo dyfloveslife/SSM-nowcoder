@@ -11,7 +11,6 @@
 		from_id, to_id, conversation_id, content, status, create_time
 	</sql>
 
-
 	<select id="selectConversations" resultType="Message">
 		select <include refid="selectFields"></include>
 		from message

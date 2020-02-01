@@ -128,6 +128,9 @@ public class MessageController {
     @ResponseBody // 这里使用异步请求
     // 在浏览器中需要填写的就是要发给谁，以及要发送的内容
     public String sendLetter(String toName, String content) {
+        // 异常测试
+        //Integer.valueOf("abc");
+
         User target = userService.findUserByName(toName);
         if (target == null) {
             return CommunityUtil.getJSONString(1, "目标用户不存在!");

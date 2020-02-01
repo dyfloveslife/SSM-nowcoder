@@ -6,6 +6,7 @@ import com.nowcoder.community.utils.SensitiveFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
+
 import java.util.List;
 
 @Service
@@ -37,10 +38,11 @@ public class MessageService {
         return messageMapper.selectLetterUnreadCount(userId, conversationId);
     }
 
-    // 添加消息之前需要进行过滤
     public int addMessage(Message message) {
+        // 添加消息之前需要对内容进行过滤
         message.setContent(HtmlUtils.htmlEscape(message.getContent()));
         message.setContent(sensitiveFilter.filter(message.getContent()));
+
         return messageMapper.insertMessage(message);
     }
 
