@@ -6,6 +6,7 @@ import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.service.CommentService;
 import com.nowcoder.community.service.DiscussPostService;
+import com.nowcoder.community.service.LikeService;
 import com.nowcoder.community.service.UserService;
 import com.nowcoder.community.utils.CommunityConstant;
 import com.nowcoder.community.utils.CommunityUtil;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.security.auth.message.callback.PrivateKeyCallback;
 import java.util.*;
 
 @Controller
@@ -36,9 +38,18 @@ public class DiscussPostController implements CommunityConstant {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private LikeService likeService;
+
+    /**
+     * 浏览器给提供的只有 title 和 content
+     *
+     * @param title
+     * @param content
+     * @return
+     */
     @RequestMapping(path = "/add", method = RequestMethod.POST)
     @ResponseBody  // 返回的是字符串
-    // 浏览器给提供的只有 title 和 content
     public String addDiscussPost(String title, String content) {
         User user = hostHolder.getUser();
         // 如果用户没有登录的话，则返回给页面一个 json 格式的数据
@@ -58,11 +69,18 @@ public class DiscussPostController implements CommunityConstant {
         return CommunityUtil.getJSONString(0, "发送成功!");
     }
 
-    // 查询帖子的时候需要根据 id 查，这里需要把 id 传进来
-    // 在路径中取值，需要用到 @PathVariable 注解
-    // 使用 model 携带一些数据
-    // 注意：这里的 model 和 page 会被 SpringMVC 在解析模板的时候自动装载上
-    // 所以，在网页中直接从 model 中取值即可
+    /**
+     * 查询帖子的时候需要根据 id 查，这里需要把 id 传进来
+     * 在路径中取值，需要用到 @PathVariable 注解
+     * 使用 model 携带一些数据
+     * 注意：这里的 model 和 page 会被 SpringMVC 在解析模板的时候自动装载上
+     * 所以，在网页中直接从 model 中取值即可
+     *
+     * @param discussPostId
+     * @param model
+     * @param page
+     * @return
+     */
     @RequestMapping(path = "/detail/{discussPostId}", method = RequestMethod.GET)
     public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page) {
         // 获得帖子
@@ -71,6 +89,16 @@ public class DiscussPostController implements CommunityConstant {
         // 获得作者
         User user = userService.findUserById(post.getUserId());
         model.addAttribute("user", user);
+
+        // 点赞数量
+        long likeCount = likeService.findEntityLikeCount(CommunityConstant.ENTITY_TYPE_POST, discussPostId);
+        model.addAttribute("likeCount", likeCount);
+
+        // 点赞状态
+        // 如果用户没有登录，则不执行查询点赞状态语句
+        int likeStatus = hostHolder.getUser() == null ? 0 :
+                likeService.findEntityLikeStatus(hostHolder.getUser().getId(), CommunityConstant.ENTITY_TYPE_POST, discussPostId);
+        model.addAttribute("likeStatus", likeStatus);
 
         // 评论分页信息
         page.setLimit(5);
@@ -91,6 +119,13 @@ public class DiscussPostController implements CommunityConstant {
                 // 作者
                 commentVo.put("user", userService.findUserById(comment.getUserId()));
 
+                // 增加点赞数量以及点赞状态功能
+                likeCount = likeService.findEntityLikeCount(CommunityConstant.ENTITY_TYPE_COMMENT, comment.getId());
+                commentVo.put("likeCount", likeCount);
+                likeStatus = hostHolder.getUser() == null ? 0 :
+                        likeService.findEntityLikeStatus(hostHolder.getUser().getId(), CommunityConstant.ENTITY_TYPE_COMMENT, comment.getId());
+                commentVo.put("likeStatus", likeStatus);
+
                 // 回复列表
                 List<Comment> replyList = commentService.findCommentByEntity(ENTITY_TYPE_COMMENT, comment.getId(), 0, Integer.MAX_VALUE);
                 // 回复 vo 列表
@@ -105,6 +140,13 @@ public class DiscussPostController implements CommunityConstant {
                         // 回复的目标
                         User target = reply.getTargetId() == 0 ? null : userService.findUserById(reply.getTargetId());
                         replyVo.put("target", target);
+
+                        // 增加点赞数量以及点赞状态功能
+                        likeCount = likeService.findEntityLikeCount(CommunityConstant.ENTITY_TYPE_COMMENT, reply.getId());
+                        replyVo.put("likeCount", likeCount);
+                        likeStatus = hostHolder.getUser() == null ? 0 :
+                                likeService.findEntityLikeStatus(hostHolder.getUser().getId(), CommunityConstant.ENTITY_TYPE_COMMENT, reply.getId());
+                        replyVo.put("likeStatus", likeStatus);
 
                         replyVoList.add(replyVo);
                     }
