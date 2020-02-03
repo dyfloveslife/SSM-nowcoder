@@ -2,6 +2,7 @@ package com.nowcoder.community.controller;
 
 import com.nowcoder.community.annotation.LoginRequired;
 import com.nowcoder.community.entity.User;
+import com.nowcoder.community.service.LikeService;
 import com.nowcoder.community.service.UserService;
 import com.nowcoder.community.utils.CommunityUtil;
 import com.nowcoder.community.utils.HostHolder;
@@ -42,13 +43,23 @@ public class UserController {
     @Autowired
     private HostHolder hostHolder;
 
+    @Autowired
+    private LikeService likeService;
+
     @LoginRequired
     @RequestMapping(path = "/setting", method = RequestMethod.GET)
     public String getSettingPage() {
         return "/site/setting";
     }
 
-    // 上传文件的请求，必须使用 POST 方式
+
+    /**
+     * 上传文件的请求，必须使用 POST 方式
+     *
+     * @param headerImage
+     * @param model
+     * @return
+     */
     @LoginRequired
     @RequestMapping(path = "/upload", method = RequestMethod.POST)
     public String uploadHeader(MultipartFile headerImage, Model model) {
@@ -87,7 +98,13 @@ public class UserController {
         return "redirect:/index";
     }
 
-    // 向浏览器响应图片
+
+    /**
+     * 向浏览器响应图片
+     *
+     * @param fileName
+     * @param response
+     */
     @RequestMapping(path = "/header/{fileName}", method = RequestMethod.GET)
     public void getHeader(@PathVariable("fileName") String fileName, HttpServletResponse response) {
         // 先找到文件存放的位置
@@ -125,5 +142,28 @@ public class UserController {
             model.addAttribute("passwordMsg", "修改密码成功!");
             return "/site/setting";
         }
+    }
+
+
+    /**
+     * 个人主页，分为当前登录用户的主页和查看别人的主页
+     *
+     * @param userId
+     * @param model
+     * @return
+     */
+    @RequestMapping(path = "/profile/{userId}", method = RequestMethod.GET)
+    public String getProfilePage(@PathVariable("userId") int userId, Model model) {
+        User user = userService.findUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("该用户不存在!");
+        }
+
+        model.addAttribute("user", user);
+        // 点赞数量
+        int likeCount = likeService.findUserLikeCount(userId);
+        model.addAttribute("likeCount", likeCount);
+
+        return "/site/profile";
     }
 }
