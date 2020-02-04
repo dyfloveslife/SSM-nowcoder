@@ -4,6 +4,7 @@ import com.nowcoder.community.entity.LoginTicket;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
+@Deprecated // 表示不推荐使用当前的接口
 public interface LoginTicketMapper {
 
     // 字符串之间可以拼接，注意每句话后面的空格
