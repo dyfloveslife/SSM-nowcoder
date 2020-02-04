@@ -8,10 +8,8 @@ public class RedisKeyUtil {
     private static final String SPLIT = ":";
     private static final String PREFIX_ENTITY_LIKE = "like:entity";
     private static final String PREFIX_USER_LIKE = "like:user";
-    // 被关注者：明星
-    private static final String PREFIX_FOLLOWEE = "followee";
-    // 关注着：粉丝
-    private static final String PREFIX_FOLLOWER = "follower";
+    private static final String PREFIX_FOLLOWEE = "followee";  // 被关注者：明星
+    private static final String PREFIX_FOLLOWER = "follower";  // 关注者：粉丝
     private static final String PREFIX_KAPTCHA = "kaptcha";
     private static final String PREFIX_TICKET = "ticket";
     private static final String PREFIX_USER = "USER";
