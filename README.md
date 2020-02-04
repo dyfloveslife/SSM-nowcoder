@@ -100,3 +100,9 @@ Redis 不完全支持 ACID 特性，实现的方式是：当启用事务，执�
 # 使用 Kafka 构建异步消息系统
 
 可以使用阻塞队列（BlockingQueue）解决线程通信的问题，其中的一些阻塞方法，如 put、take 等。同时适用于生产者（产生数据的线程）与消费者（使用数据的线程）模式。具体的实现类有：ArrayBlockQueue、LinkedBlockQueue、PriorityBlockQueue、SynchronousBlockQueue、DelayQueue 等。
+
+对于消息队列的实现方式，大致分为点对点方式（如生产者消费者模式）和发布订阅模式。而对于发布订阅模式，生产者生产商品放到了某个位置，可以有多个消费者同时关注订阅该位置，从而读取消息。 
+
+使用 Kafka 这一分布式流媒体平台可以实现消息系统、日志收集、用户行为追踪、流式处理等，具有高吞吐量、消息持久化、高可靠性、高扩展性等特点。对于消息的持久化，将数据流保存在硬盘中，顺序读取比随机读取的速度要快。
+
+对于一些相关的术语，如 Broker，即 Kafka 的服务器，每一台服务器称之为一个 Broker；Zookeeper，即用来管理集群，它属于单独的一套框架，只不过 Kafka 也需要集群的管理，所以使用了 Zookeeper；Topic，即生产者将消息存放的位置；Partition，即对 Topic 位置进行多个分区，将数据追加到每个分区中；Offset，即消息（数据）在分区（Partition）中存放的索引；可以将分区保存成副本（Replica），当获取数据的时候，可以从主副本（Leader Replica）中获取数据，而从副本（Follower Replica）只负责做备份。
