@@ -14,6 +14,7 @@ public class RedisKeyUtil {
     private static final String PREFIX_FOLLOWER = "follower";
     private static final String PREFIX_KAPTCHA = "kaptcha";
     private static final String PREFIX_TICKET = "ticket";
+    private static final String PREFIX_USER = "USER";
 
     /**
      * 某个实体的赞
@@ -85,5 +86,15 @@ public class RedisKeyUtil {
      */
     public static String getTicket(String ticket) {
         return PREFIX_TICKET + SPLIT + ticket;
+    }
+
+    /**
+     * 根据 userId 获取 User 对象
+     *
+     * @param userId
+     * @return
+     */
+    public static String getUser(int userId) {
+        return PREFIX_USER + SPLIT + userId;
     }
 }
