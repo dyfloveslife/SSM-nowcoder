@@ -12,6 +12,7 @@ public class RedisKeyUtil {
     private static final String PREFIX_FOLLOWEE = "followee";
     // 关注着：粉丝
     private static final String PREFIX_FOLLOWER = "follower";
+    private static final String PREFIX_KAPTCHA = "kaptcha";
 
     /**
      * 某个实体的赞
@@ -61,5 +62,17 @@ public class RedisKeyUtil {
      */
     public static String getFollowerKey(int entityType, int entityId) {
         return PREFIX_FOLLOWER + SPLIT + entityType + SPLIT + entityId;
+    }
+
+
+    /**
+     * 登录验证码
+     * 这里不能传入 userId，因为刚开始登录的时候还不知道用户的 id 是多少
+     *
+     * @param owner
+     * @return
+     */
+    public static String getKaptchaKey(String owner) {
+        return PREFIX_KAPTCHA + SPLIT + owner;
     }
 }
