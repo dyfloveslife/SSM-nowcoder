@@ -27,6 +27,9 @@ public class ServiceLogAspect {
     public void before(JoinPoint joinpoint) {
         // 用户[111.123.13.14]在[21:20:22]访问了[com.nowcoder.community.service.xxx()]
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            return;
+        }
         HttpServletRequest request = attributes.getRequest();
         String ip = request.getRemoteHost();
         String nowTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
