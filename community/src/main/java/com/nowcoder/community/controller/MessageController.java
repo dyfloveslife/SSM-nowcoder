@@ -197,7 +197,7 @@ public class MessageController implements CommunityConstant {
 
             int count = messageService.findNoticeCount(user.getId(), TOPIC_COMMENT);
             messageVO.put("count", count);
-            int unread = messageService.findLetterUnreadCount(user.getId(), TOPIC_COMMENT);
+            int unread = messageService.findNoticeUnreadCount(user.getId(), TOPIC_COMMENT);
             messageVO.put("unread", unread);
         }
         model.addAttribute("commentNotice", messageVO);
@@ -218,7 +218,7 @@ public class MessageController implements CommunityConstant {
 
             int count = messageService.findNoticeCount(user.getId(), TOPIC_LIKE);
             messageVO.put("count", count);
-            int unread = messageService.findLetterUnreadCount(user.getId(), TOPIC_LIKE);
+            int unread = messageService.findNoticeUnreadCount(user.getId(), TOPIC_LIKE);
             messageVO.put("unread", unread);
         }
         model.addAttribute("likeNotice", messageVO);
@@ -238,7 +238,7 @@ public class MessageController implements CommunityConstant {
 
             int count = messageService.findNoticeCount(user.getId(), TOPIC_FOLLOW);
             messageVO.put("count", count);
-            int unread = messageService.findLetterUnreadCount(user.getId(), TOPIC_FOLLOW);
+            int unread = messageService.findNoticeUnreadCount(user.getId(), TOPIC_FOLLOW);
             messageVO.put("unread", unread);
         }
         model.addAttribute("followNotice", messageVO);
@@ -251,5 +251,54 @@ public class MessageController implements CommunityConstant {
         model.addAttribute("noticeUnreadCount", noticeUnreadCount);
 
         return "/site/notice";
+    }
+
+    /**
+     * 通知的详情
+     *
+     * @param topic
+     * @param page
+     * @param model
+     * @return
+     */
+    @RequestMapping(path = "/notice/detail/{topic}", method = RequestMethod.GET)
+    public String getNoticeDetail(@PathVariable("topic") String topic, Page page, Model model) {
+        User user = hostHolder.getUser();
+
+        page.setLimit(5);
+        page.setPath("/notice/detail/" + topic);
+        page.setRows(messageService.findNoticeCount(user.getId(), topic));
+
+        // 额外的再添加一些数据
+        List<Message> noticeList = messageService.findNotices(user.getId(), topic, page.getOffset(), page.getLimit());
+        List<Map<String, Object>> noticeVoList = new ArrayList<>();
+        if (noticeList != null) {
+            for (Message notice : noticeList) {
+                Map<String, Object> map = new HashMap<>();
+                // 通知
+                map.put("notice", notice);
+                // 内容
+                String content = HtmlUtils.htmlUnescape(notice.getContent());
+                Map<String, Object> data = JSONObject.parseObject(content, HashMap.class);
+                map.put("user", userService.findUserById((Integer) data.get("userId")));
+                map.put("entityType", data.get("entityType"));
+                map.put("entityId", data.get("entityId"));
+                map.put("postId", data.get("postId"));
+
+                // 通知的作者
+                map.put("fromUser", userService.findUserById(notice.getFromId()));
+
+                noticeVoList.add(map);
+            }
+        }
+        model.addAttribute("notices", noticeVoList);
+
+        // 设置已读
+        List<Integer> ids = getLetterIds(noticeList);
+        if (!ids.isEmpty()) {
+            messageService.readMessage(ids);
+        }
+
+        return "/site/notice-detail";
     }
 }
