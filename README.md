@@ -97,6 +97,9 @@ Redis 不完全支持 ACID 特性，实现的方式是：当启用事务，执�
 
 在设计缓存的时候，先从缓存中取值，能取到的话就用，取不到的话说明值没有初始化到缓存中，此时需要进行初始化。当数据变更时，一般可以更新缓存，或者将缓存删除后再次进行缓存。 也就是说，在查询的时候，不是先去 MySQL 中查，而是先从缓存中取值。
 
+使用 Redis 高级数据结构 HyperLogLog 和 Bitmap 对网站的数据进行统计。
+
+
 # 使用 Kafka 构建异步消息系统
 可以使用阻塞队列（BlockingQueue）解决线程通信的问题，其中的一些阻塞方法，如 put、take 等。同时适用于生产者（产生数据的线程）与消费者（使用数据的线程）模式。具体的实现类有：ArrayBlockQueue、LinkedBlockQueue、PriorityBlockQueue、SynchronousBlockQueue、DelayQueue 等。
 
