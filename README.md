@@ -119,3 +119,7 @@ Elasticsearch 是一个分布式、RESTful 风格的搜索引擎，支持对各�
 #　使用 Spring Security 进行身份认证和授权
 Spring Security 可以对身份进行认证和授权，防止会话固定攻击、点击劫持、csrf 攻击等。
 
+# 任务执行和调度
+JDK 线程池、Spring 线程池以及使用分布式定时任务 Spring Quartz。这里涉及到在分布式部署的前提下，为什么使用 Spring Quartz 而不是使用 JDK 线程池和 Spring 线程池。
+
+在分布式系统中，对于多台服务器，假如每台服务器可执行 controller 和 scheduler 操作，此时浏览器通过负载均衡 Nginx 进行选择，如果是一般的页面请求（登录、注册、首页），则会将请求交给某台服务器的 controller。但是每台服务器中的 scheduler 都会做相同的事，例如删除某个日志文件等，这样会显得冗余。而 JDK 线程池和 Spring 线程池不能解决分布式中的问题（它们是基于内存的，而服务器之间内存不共享），但 Spring Quartz 可以，它会把参数存到数据库里，每台服务器中的 Quartz 共同访问同一数据库，从而可以实现共享的操作。
