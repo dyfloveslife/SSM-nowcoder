@@ -118,7 +118,7 @@ Elasticsearch 是一个分布式、RESTful 风格的搜索引擎，支持对各�
 
 将帖子保存到 es 中，从 es 中进行搜索与删除帖子。同样的，在进行发布帖子和增加评论时，也是采用异步的方式提交到 es 服务器。
 
-#　使用 Spring Security 进行身份认证和授权
+# 使用 Spring Security 进行身份认证和授权
 Spring Security 可以对身份进行认证和授权，防止会话固定攻击、点击劫持、csrf 攻击等。
 
 # 任务执行和调度
