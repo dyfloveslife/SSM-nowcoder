@@ -12,9 +12,11 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,8 +36,15 @@ public class EventConsumer implements CommunityConstant {
     @Autowired
     private ElasticsearchService elasticsearchService;
 
+    @Value("${wk.image.command}")
+    private String wkImageCommand;
+
+    @Value("${wk.image.storage}")
+    private String wkImageStorage;
+
     /**
      * 消费评论事件
+     *
      * @param record
      */
     @KafkaListener(topics = {TOPIC_COMMENT, TOPIC_LIKE, TOPIC_FOLLOW})
@@ -76,6 +85,7 @@ public class EventConsumer implements CommunityConstant {
 
     /**
      * 消费发帖事件
+     *
      * @param record
      */
     @KafkaListener(topics = TOPIC_PUBLISH)
@@ -99,6 +109,7 @@ public class EventConsumer implements CommunityConstant {
     /**
      * 消费删帖事件，因为删除一个帖子后，就不需要再搜索到了
      * 所以使用 deleteDiscussPost 方法
+     *
      * @param record
      */
     @KafkaListener(topics = TOPIC_DELETE)
@@ -116,5 +127,32 @@ public class EventConsumer implements CommunityConstant {
         }
 
         elasticsearchService.deleteDiscussPost(event.getEntityId());
+    }
+
+    @KafkaListener(topics = TOPIC_SHARE)
+    public void handleShareMessage(ConsumerRecord record) {
+        if (record == null || record.value() == null) {
+            LOGGER.error("消息内容为空!");
+            return;
+        }
+
+        // 将 JSON 格式的字符串转换成 Event 对象
+        Event event = JSONObject.parseObject(record.value().toString(), Event.class);
+        if (event == null) {
+            LOGGER.error("消息格式错误!");
+            return;
+        }
+
+        String htmlUrl = (String) event.getData().get("htmlUrl");
+        String fileName = (String) event.getData().get("fileName");
+        String suffix = (String) event.getData().get("suffix");
+
+        String cmd = wkImageCommand + " --quality 75 " + htmlUrl + " " + wkImageStorage + "/" + fileName + suffix;
+        try {
+            Runtime.getRuntime().exec(cmd);
+            LOGGER.info("生成长图成功!" + cmd);
+        } catch (IOException e) {
+            LOGGER.error("生成长图失败!" + e.getMessage());
+        }
     }
 }
