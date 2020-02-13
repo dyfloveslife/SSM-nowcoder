@@ -138,3 +138,11 @@ JDK 线程池、Spring 线程池以及使用分布式定时任务 Spring Quartz�
 对于多级缓存，当浏览器访问应用的时候，首先从本地缓存（一级缓存）中查看是否有相应的数据，有则直接返回，没有的话再请求二级缓存（例如 Redis），有数据则返回，没有的话则访问数据库，找到相应数据后需要对数据进行同步，先同步二级缓存，再同步一级缓存，最终才将数据进行返回。同步的目的是便于下次同样访问此资源时，能够更快的从本地缓存（一级缓存）得到响应。
 
 对于缓存的淘汰策略，可以根据最近最久未使用的方式进行淘汰，也可以根据数据的使用率（频繁程度）进行淘汰，也可以根据时间进行淘汰。
+
+优化前：
+
+![before-optimizaiton](https://github.com/dyfloveslife/SSM-nowcoder/blob/master/images/BeforeOptimization.jpg)
+
+优化后：
+
+![after-optimization](https://github.com/dyfloveslife/SSM-nowcoder/blob/master/images/AfterOptimization.jpg)

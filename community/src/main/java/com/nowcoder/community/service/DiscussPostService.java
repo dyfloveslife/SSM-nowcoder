@@ -38,7 +38,7 @@ public class DiscussPostService {
     @Autowired
     private SensitiveFilter sensitiveFilter;
 
-    // Cafffeine 核心接口：Cache、LoadingCache、AsyncLoadingCache
+    // Caffeine 核心接口：Cache、LoadingCache、AsyncLoadingCache
 
     // 帖子列表缓存
     private LoadingCache<String, List<DiscussPost>> postListCache;
