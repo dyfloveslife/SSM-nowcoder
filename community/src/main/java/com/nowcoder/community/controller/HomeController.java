@@ -31,6 +31,11 @@ public class HomeController implements CommunityConstant {
     @Autowired
     private LikeService likeService;
 
+    @RequestMapping(path = "/", method = RequestMethod.GET)
+    public String root() {
+        return "forward:/index";
+    }
+
     /**
      * 当点击进入首页的时候，如果不指定 @RequestParam，
      * 则会报错，此时可以使用默认值将其置为 0 即可

@@ -151,3 +151,10 @@ JDK 线程池、Spring 线程池以及使用分布式定时任务 Spring Quartz�
 在进行单元测试的时候，测试用例用该保证测试方法的独立性，即待测试的方法不与其它方法产生耦合，如果在测试某一方法时引入了别的业务方法，则在代码改动的时候，对其进行测试产生的数据或者测试结果有可能是不正确的。应遵循**初始化数据**、**执行测试代码**、**验证测试结果**以及**清理测试数据**，这样可以保证每次测试的时候都会产生针对此方法的测试数据，测试完之后再将其删除即可，不会与其它的数据产生歧义。常用的注解有 @BeforeClass、@AfterClass、@Before 以及 @After。
 
 使用 Spring Boot Actuator 对项目进行监控。
+
+# 网站部署
+使用虚拟机进行上线测试，系统为 ContOS7，安装好需要的软件后通过虚拟机的 IP 地址进行访问，如下所示：
+
+![online1](https://github.com/dyfloveslife/SSM-nowcoder/blob/master/images/online1.jpg)
+
+![online2](https://github.com/dyfloveslife/SSM-nowcoder/blob/master/images/online2.jpg)
