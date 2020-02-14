@@ -28,6 +28,10 @@
 
 在服务端使用 wkhtmltoimage 将网页模板生成长图。
 
+# 项目总览
+
+![website](https://github.com/dyfloveslife/SSM-nowcoder/blob/master/images/website.png)
+
 # 注册页面
 使用模板复用顶部区域内的链接。通过点击顶部区域的链接，打开注册页面，然后进行相应的注册。
 
