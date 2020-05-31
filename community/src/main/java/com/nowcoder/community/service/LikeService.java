@@ -38,7 +38,7 @@ public class LikeService {
             @Override
             public Object execute(RedisOperations operations) throws DataAccessException {
                 String entityLikeKey = RedisKeyUtil.getEntityLikeKey(entityType, entityId);
-                String eneityUserLikeKey = RedisKeyUtil.getUserLikeKey(entityUserId);
+                String entityUserLikeKey = RedisKeyUtil.getUserLikeKey(entityUserId);
 
                 // 判断当前用户有没有对该实体点过赞
                 boolean isMember = operations.opsForSet().isMember(entityLikeKey, userId);
@@ -47,10 +47,10 @@ public class LikeService {
 
                 if (isMember) {
                     operations.opsForSet().remove(entityLikeKey, userId);
-                    operations.opsForValue().decrement(eneityUserLikeKey);
+                    operations.opsForValue().decrement(entityUserLikeKey);
                 } else {
                     operations.opsForSet().add(entityLikeKey, userId);
-                    operations.opsForValue().increment(eneityUserLikeKey);
+                    operations.opsForValue().increment(entityUserLikeKey);
                 }
 
                 return operations.exec();

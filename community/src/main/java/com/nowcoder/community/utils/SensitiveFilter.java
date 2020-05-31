@@ -84,7 +84,7 @@ public class SensitiveFilter {
         int position = 0;
         // 用于存放最终的结果
         StringBuilder sb = new StringBuilder();
-        // 以 postition 作为条件
+        // 以 position 作为条件
         while (position < text.length()) {
             char c = text.charAt(position);
             // 跳过符号

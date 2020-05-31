@@ -31,10 +31,10 @@ public class HomeController implements CommunityConstant {
     @Autowired
     private LikeService likeService;
 
-    @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String root() {
-        return "forward:/index";
-    }
+//    @RequestMapping(path = "/", method = RequestMethod.GET)
+//    public String root() {
+//        return "forward:/index";
+//    }
 
     /**
      * 当点击进入首页的时候，如果不指定 @RequestParam，
