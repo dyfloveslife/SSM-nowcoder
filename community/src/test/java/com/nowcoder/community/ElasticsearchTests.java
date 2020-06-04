@@ -168,8 +168,8 @@ public class ElasticsearchTests {
 
                     list.add(post);
                 }
-                return new AggregatedPageImpl(list, pageable,
-                        hits.getTotalHits(), response.getAggregations(), response.getScrollId(), hits.getMaxScore());
+                return new AggregatedPageImpl(list, pageable, hits.getTotalHits(),
+                        response.getAggregations(), response.getScrollId(), hits.getMaxScore());
             }
         });
 

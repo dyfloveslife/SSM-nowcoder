@@ -12,7 +12,7 @@ public class CommunityApplication {
     /**
      * 由于 Redis 和 Elasticsearch 底层都依赖 Netty，所以需要修改 es 部分配置
      * 解决 netty 启动冲突的问题
-     * see Netty4Utils
+     * see Netty4Utils.setAvailableProcessors()
      */
     @PostConstruct
     public void init() {
