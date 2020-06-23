@@ -16,13 +16,14 @@ public class AlphaInterceptor implements HandlerInterceptor {
 
     // 在 controller 之前执行
     // Object 表示需要拦截的目标
+    // 如果不想要往下执行的话，则返回 false
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         LOGGER.debug("preHandle: " + handler.toString());
         return true;
     }
 
-    // 在 controller 之后执行
+    // 在 controller 之后执行，在模板引擎执行之前执行
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         LOGGER.debug("postHandle: " + handler.toString());

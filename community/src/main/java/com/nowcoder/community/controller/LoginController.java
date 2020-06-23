@@ -124,9 +124,8 @@ public class LoginController implements CommunityConstant {
     // 这里虽然和 getLoginPage() 方法请求的路径相同，但请求方式不同
     // 由于之前的生成的验证码是存放在 session 中的，所以这里也需要声明 session
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public String login(String username, String password, String code, boolean rememberMe,
-                        Model model, /*HttpSession session,*/ HttpServletResponse response,
-                        @CookieValue("kaptchaOwner") String kaptchaOwner) {
+    public String login(String username, String password, String code, boolean rememberMe, Model model,
+            /*HttpSession session,*/ HttpServletResponse response, @CookieValue("kaptchaOwner") String kaptchaOwner) {
         // 先判断验证码
         //String kaptcha = (String) session.getAttribute("kaptcha");
 

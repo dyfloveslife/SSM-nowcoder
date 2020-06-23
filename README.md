@@ -1,4 +1,4 @@
-# nowcoder 讨论平台
+# 在线讨论社区
 
 # 相关技术与开发环境
 - Spring Boot

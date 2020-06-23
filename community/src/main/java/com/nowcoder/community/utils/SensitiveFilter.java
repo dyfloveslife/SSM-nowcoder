@@ -26,6 +26,8 @@ public class SensitiveFilter {
     private TireNode rootNode = new TireNode();
 
     @PostConstruct
+    // @PostConstruct 修饰的方法会在服务器加载 Servlet 的时候运行，并且只会被服务器执行一次。
+    // PostConstruct 在构造函数之后执行，init() 方法之前执行。
     public void init() {
         try (
                 // 得到字节流
@@ -37,7 +39,7 @@ public class SensitiveFilter {
             // 不为空，说明还有数据，则继续读
             while ((keyword = reader.readLine()) != null) {
                 // 添加到前缀树
-                this.addKeyword(keyword);
+                addKeyword(keyword);
             }
         } catch (IOException e) {
             LOGGER.error("加载敏感词文件失败!" + e.getMessage());
@@ -49,6 +51,9 @@ public class SensitiveFilter {
         TireNode tempNode = rootNode;
         for (int i = 0; i < keyword.length(); i++) {
             char c = keyword.charAt(i);
+
+            // 这里先从前缀树中获取字符 c，如果获取到的 c 是 null，
+            // 则说明前缀树中没有这个字符 c，那么就可以将 c 放进前缀树了
             TireNode subNode = tempNode.getSubNode(c);
 
             if (subNode == null) {
@@ -82,12 +87,13 @@ public class SensitiveFilter {
         TireNode tempNode = rootNode;
         int begin = 0;
         int position = 0;
+
         // 用于存放最终的结果
         StringBuilder sb = new StringBuilder();
         // 以 position 作为条件
         while (position < text.length()) {
             char c = text.charAt(position);
-            // 跳过符号
+            // 跳过特殊符号
             if (isSymbol(c)) {
                 // tempNode 处于根节点，将此符号计入结果，让 begin 后移
                 if (tempNode == rootNode) {

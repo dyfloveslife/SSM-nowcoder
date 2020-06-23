@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Target 表明该注解可以用在方法上
- * Retention 注解保留时长
+ * Retention 注解保留时长，RUNTIME 表示只有程序运行的时候该注解才有效
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
